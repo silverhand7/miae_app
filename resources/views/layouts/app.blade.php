@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') | MIAE APP</title>
 
 
     <!-- Bootstrap core CSS     -->
@@ -30,7 +30,12 @@
 <body>
     <div class="wrapper">
         @guest
+            <!-- form login -->
             @yield('login')
+
+            <!-- content forget password & register -->
+            <br><br><br><br>
+            @yield('content')
         @else
             @include('layouts.sidebar')
 
@@ -45,9 +50,12 @@
                 @include('layouts.footer')
             </div>
         @endguest
+
+        
+        
   
     </div>
-
+    
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
@@ -64,7 +72,11 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
     <!-- Paper Dashboard Core javascript and methods for Demo purpose -->
-    <script src="{{asset('js/paper-dashboard.js')}}"></script>
+    <script src="{{asset('js/paper-dashboard.js')}}"></script>  
+
+    @include('layouts.notification')
+
+    @stack('scripts')
 
 </body>
 </html>

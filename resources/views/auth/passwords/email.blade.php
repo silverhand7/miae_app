@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+Reset Password
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -18,7 +22,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">Username </label>
+                            <label for="email" class="col-md-4 control-label">Email </label>
 
                             <div class="col-md-6">
                                 <input id="email" type="text" class="form-control border-input"  name="email" value="{{ old('email') }}" required>

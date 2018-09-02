@@ -1,11 +1,16 @@
 @extends('layouts.app')
 
+@section('title')
+Login
+@endsection
+
 @section('login')
+<br><br><br><br>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Login System Monthly Income and Expenses</div>
+                <div class="panel-heading" align="center">Login System Monthly Income and Expenses</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
@@ -19,7 +24,7 @@
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong style="color:red">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -53,7 +58,7 @@
                                     Login
                                 </button>
                                 
-                                <a class="" href="{{ route('register') }}">
+                                <a class="btn btn-info" href="{{ route('register') }}">
                                     &nbsp; Register
                                 </a>
 

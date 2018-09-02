@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\History;
+use App\Balance;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,30 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['menu'] = 1;
+        $user = Auth::user()->id;
+        $saldo = Balance::where('user_id', $user)->get();
+        if($saldo->count() == 0) {
+            return view('home', $data);
+        } else {
+            return view('dashboard.index', $data);   
+        }
+        
+    }
+
+    public function initialBalance(request $request){
+        $request['month'] = date('m');
+        $request['user_id'] = Auth::user()->id;
+
+        $validate = $request->validate([
+            'amount' => 'required|integer'
+        ]);
+
+        if($validate){
+            Balance::create($request->toArray());
+            $request->session()->flash('success', 'Add initial balance success!');
+            return redirect()->route('home');
+        }
+        
     }
 }
