@@ -18,4 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('home/initial', 'HomeController@initialBalance')->name('initial');
+Route::post('home/initial', 'HomeController@initialBalance')->name('initial')->middleware('auth');
+Route::resource('history', 'HistoryController')->middleware('auth');

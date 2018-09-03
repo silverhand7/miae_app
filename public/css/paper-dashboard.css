@@ -1,3 +1,32 @@
+.bg-mobile {
+  background: white;
+  padding-top: 10px;
+  padding-left:10px;
+  padding-right: 10px;
+}
+
+
+
+@media (max-width:410px) {
+  .table-m {
+    font-size: 12px;
+    margin:0;
+    padding:0;
+    width: 100%;
+  }
+
+}
+
+@media(max-width: 345px){
+  .table-m {
+    font-size: 10px;
+    margin:0;
+    padding:0;
+    width: 100%;
+    margin-left: -20px;
+  }
+}
+
 /*!
     
  =========================================================

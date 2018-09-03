@@ -33,7 +33,7 @@ class HomeController extends Controller
         if($saldo->count() == 0) {
             return view('home', $data);
         } else {
-            return view('dashboard.index', $data);   
+            return redirect()->route('history.index');   
         }
         
     }
@@ -49,7 +49,7 @@ class HomeController extends Controller
         if($validate){
             Balance::create($request->toArray());
             $request->session()->flash('success', 'Add initial balance success!');
-            return redirect()->route('home');
+            return redirect()->route('history.index');
         }
         
     }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableBalance extends Migration
+class AddSoftdeletesTableHistory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateTableBalance extends Migration
      */
     public function up()
     {
-        Schema::create('balance', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('amount');
-            $table->timestamps();
+        Schema::table('history', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateTableBalance extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('balance');
+        Schema::table('history', function (Blueprint $table) {
+            //
+        });
     }
 }
