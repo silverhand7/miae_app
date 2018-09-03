@@ -62,34 +62,36 @@ Dashboard
                     <div class="row">
                         <div class="col-md-12">
                             <div class="bg-mobile">
-                                <p><b>{{ date('d-m-Y', strtotime('2018-09-03')) }}</b></p>
-                                <table class="table table-m">
-                                    <tr>
-                                        <th>In</th>
-                                        <th>Out</th>
-                                        <th>Balance</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>8.000.000</td>
-                                        <td>8.000.000</td>
-                                        <td><a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1.900.000</td>
-                                        <td></td>
-                                        <td>7.100.000</td>
-                                        <td> <a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a> </td>
-                                    </tr>
-                                    
-                                </table>
+                                <p>2018-03-09</p>
+                                <center>
+                                    <table class="table table-m">
+                                        <tr>
+                                            <th>In</th>
+                                            <th>Out</th>
+                                            <th>Balance</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>1.500.000</td>
+                                            <td>2.100.000</td>
+                                            <td><a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.000.000</td>
+                                            <td></td>
+                                            <td>7.100.000</td>
+                                            <td> <a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a> </td>
+                                        </tr>
+                                    </table>
+                                </center>
                             </div>
                         </div>
                     </div>
                     <hr>
                      <!-- UI Mobile -->
                     <div class="row">
+                        <center>
                         <div class="col-md-12">
                             <div class="bg-mobile">
                                 <p>2018-03-09</p>
@@ -116,6 +118,7 @@ Dashboard
                                 </table>
                             </div>
                         </div>
+                        </center>
                     </div>
                     <hr>
                      <!-- UI Mobile -->
