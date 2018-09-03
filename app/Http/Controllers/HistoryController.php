@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use App\Balance;
+use App\History;
 
 class HistoryController extends Controller
 {
@@ -18,31 +20,54 @@ class HistoryController extends Controller
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 
-       
+        //data saldo
         $data['balance'] = $saldo;
+
+        //data history
+        //group tanggal
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->get();
+        
+        
         $data['menu'] = 1;
         return view('history.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        
+
+        $validate = $request->validate([ 
+            'date' => 'required',
+            'type' => 'required',
+            'nominal' => 'required',
+        ]);
+
+        $request['nominal'] = str_replace(",", '', $request->nominal);
+        $request['user_id'] = Auth::user()->id;
+        
+        if($validate){
+            
+            $balance = Balance::where('user_id', $request['user_id'])->first();
+            if($request->type == 'income'){
+                $saldo = $balance['amount'] + $request['nominal'];
+            } else {
+                $saldo = $balance['amount'] - $request['nominal'];
+            }
+
+            //insert to table history
+            History::create($request->toArray());
+
+            //update table balance to newest saldo
+            Balance::where('user_id', $request['user_id'])->update([
+                'amount' => $saldo,
+                'last_saldo_date' => $request['date']
+            ]);
+
+            Session::flash('success', 'Add new history successfully!');
+            return redirect()->route('history.index');
+
+        }
+        
     }
 
     /**

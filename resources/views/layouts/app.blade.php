@@ -19,7 +19,9 @@
 
     <!--  Paper Dashboard core CSS    -->
     <link href="{{ asset('css/paper-dashboard.css')}}" rel="stylesheet"/>
-
+    
+    <!-- datepicker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!--  Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -62,6 +64,8 @@
     <!--  Checkbox, Radio & Switch Plugins -->
     <script src="{{asset('js/bootstrap-checkbox-radio.js')}}"></script>
 
+    @stack('scripts')
+
     <!--  Charts Plugin -->
     <script src="{{asset('js/chartist.min.js')}}"></script>
 
@@ -76,7 +80,7 @@
 
     @include('layouts.notification')
 
-    @stack('scripts')
+    
 
 </body>
 </html>

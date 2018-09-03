@@ -3,10 +3,12 @@
   padding-top: 10px;
   padding-left:10px;
   padding-right: 10px;
-  
+
 }
 
-
+th, td {
+  border-bottom: 1px solid #ddd;
+}
 
 @media (max-width:410px) {
   .table-m {
