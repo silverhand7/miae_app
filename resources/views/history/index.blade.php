@@ -65,6 +65,8 @@ Dashboard
                         </div>
                     </div>
                 </div>
+
+
                 
                 
                 @foreach($dates as $date)
@@ -83,10 +85,14 @@ Dashboard
                                     <th>Delete</th>
                                 </tr>
                                 @for($i=0; $i < count($daily); $i++)
-                                    <?php $sum = 0; ?>
+                                    <?php
+                                     $sum = 0; 
+                                    
+                                     $n=0;
+                                     ?>
                                     @foreach($daily[$i] as $row)
-                                        @if($date['date'] == $row['date'])
-                                            @php 
+                                            <?php
+                                           
                                                 if($row['type'] == 'income') {
                                                     $sum = $sum + $row['nominal'];
                                                     $out = '';
@@ -96,8 +102,11 @@ Dashboard
                                                     $out = $row['nominal'];
                                                     $in = '';
                                                 }
-                                                $day_saldo = $sum;
-                                            @endphp
+                                                
+                                            ?>
+                                        @if($date['date'] == $row['date'])
+                                           
+
                                             <tr>
                                                 <td>{{ $in }}</td>
                                                 <td>{{ $out }}</td>
@@ -111,10 +120,11 @@ Dashboard
                                 @endfor
                             </table>
                         </center>
+
                     </div>
                 </div>
                 @endforeach
-
+              
               
              
                  <!-- UI Mobile 

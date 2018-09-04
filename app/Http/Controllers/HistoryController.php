@@ -29,9 +29,11 @@ class HistoryController extends Controller
         //dd($data['dates'][3]->toArray()['date']);
         for($i=0; $i<$data['dates']->count(); $i++){
             $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->get();
+            $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
             //$data['daily'][$i] = $data['dates'][$i]->toArray()['date'];
         }
         //dd($data['daily']);
+        //dd($data['balanced']);
         
         $data['menu'] = 1;
         return view('history.index', $data);
