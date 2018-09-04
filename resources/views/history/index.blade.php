@@ -20,12 +20,12 @@ Dashboard
 <div class="row">
     <div class="col-lg-12 col-sm-12">
         <div class="card">
-            <div class="header"><strong>Your Balance : {{ $balance->amount }}</strong></div>
+            <div class="header"><strong>Your Balance :  Rp. {{ number_format($balance->amount) }}</strong></div>
         
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
-                        <a class="btn btn-primary btn-fill" data-toggle="collapse" href="#collapseFormHistory">Add History</a>
+                        <a class="btn btn-primary btn-fill" id="btnAdd" data-toggle="collapse" href="#collapseFormHistory">Add History</a>
                     </div>
                 </div>
                 <br>
@@ -69,10 +69,10 @@ Dashboard
 </div>
 
 @foreach($dates as $date)
-<div class="row">
+<div class="row" id="main-content">
     <div class="col-ld-12 col-sm-12">
         <div class="card">
-            <div class="header"><strong>{{ $date['date'] }}</strong></div>
+            <div class="header"><strong>{{ date("d-m-Y", strtotime($date['date']))  }}</strong></div>
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
@@ -140,6 +140,15 @@ Dashboard
 @endsection
 
 @push('scripts')
+
+<script>
+    document.getElementById('btnAdd').addEventListener('click', function(){
+        document.getElementById('main-content').style.display = 'none';
+        this.addEventListener('click', function(){
+            document.getElementById('main-content').style.display = '';
+        });
+    });
+</script>
 
 <script>
     $(".delete-btn").click(function(){
