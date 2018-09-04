@@ -16,7 +16,7 @@ class HistoryController extends Controller
     {
         $user = Auth::user()->id;
         $saldo = Balance::where('user_id', $user)->first();
-        if($saldo->count() == 0) {
+        if(count($saldo) == 0) {
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 
@@ -25,8 +25,13 @@ class HistoryController extends Controller
 
         //data history
         //group tanggal
-        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->get();
-        
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'asc')->get();
+        //dd($data['dates'][3]->toArray()['date']);
+        for($i=0; $i<$data['dates']->count(); $i++){
+            $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->get();
+            //$data['daily'][$i] = $data['dates'][$i]->toArray()['date'];
+        }
+        //dd($data['daily']);
         
         $data['menu'] = 1;
         return view('history.index', $data);

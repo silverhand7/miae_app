@@ -72,74 +72,52 @@ Dashboard
                     <div class="col-md-12">
                         <div class="bg-mobile">
                             <p>{{ $date['date'] }}</p>
+
                         </div>
+                        <center>
+                            <table class="table">
+                                 <tr>
+                                    <th>In</th>
+                                    <th>Out</th>
+                                    <th>Balance</th>
+                                    <th>Delete</th>
+                                </tr>
+                                @for($i=0; $i < count($daily); $i++)
+                                    <?php $sum = 0; ?>
+                                    @foreach($daily[$i] as $row)
+                                        @if($date['date'] == $row['date'])
+                                            @php 
+                                                if($row['type'] == 'income') {
+                                                    $sum = $sum + $row['nominal'];
+                                                    $out = '';
+                                                    $in = $row['nominal'];
+                                                } else {
+                                                    $sum = $sum - $row['nominal'];
+                                                    $out = $row['nominal'];
+                                                    $in = '';
+                                                }
+                                                $day_saldo = $sum;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $in }}</td>
+                                                <td>{{ $out }}</td>
+                                                <td>{{ $sum }}</td>
+                                                <td>Del</td>
+                                            </tr>
+                                            
+                                        @endif
+                                    @endforeach
+                                    
+                                @endfor
+                            </table>
+                        </center>
                     </div>
                 </div>
                 @endforeach
 
-                <!-- UI Mobile -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bg-mobile">
-                            <p>2018-03-09</p>
-                            <center>
-                                <table class="table table-m">
-                                    <tr>
-                                        <th>In</th>
-                                        <th>Out</th>
-                                        <th>Balance</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>50.000</td>
-                                        <td>100.000</td>
-                                        <td><a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1.000</td>
-                                        <td></td>
-                                        <td>7.100.000</td>
-                                        <td> <a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a> </td>
-                                    </tr>
-                                </table>
-                            </center>
-                        </div>
-                    </div>
-                </div>
-               
-                 <!-- UI Mobile -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bg-mobile">
-                            <p>2018-03-09</p>
-                            <center>
-                                <table class="table table-m">
-                                    <tr>
-                                        <th>In</th>
-                                        <th>Out</th>
-                                        <th>Balance</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>8.000.000</td>
-                                        <td>8.000.000</td>
-                                        <td><a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1.900.000</td>
-                                        <td></td>
-                                        <td>7.100.000</td>
-                                        <td> <a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a> </td>
-                                    </tr>
-                                </table>
-                            </center>
-                        </div>
-                    </div>
-                </div>
+              
              
-                 <!-- UI Mobile -->
+                 <!-- UI Mobile 
                 <div class="row">
                     <div class="col-md-12">
                         <div class="bg-mobile">
@@ -168,7 +146,7 @@ Dashboard
                         </div>
                     </div>
                 </div>
-               
+               -->
                 <br>
             </div>
         </div>

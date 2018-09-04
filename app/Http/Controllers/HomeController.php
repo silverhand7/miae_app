@@ -39,8 +39,9 @@ class HomeController extends Controller
     }
 
     public function initialBalance(request $request){
-        $request['month'] = date('m');
+        $request['last_saldo_date'] = date('Y-m-d');
         $request['user_id'] = Auth::user()->id;
+        $request['initial_balance'] = $request->amount;
 
         $validate = $request->validate([
             'amount' => 'required|integer'
@@ -48,6 +49,13 @@ class HomeController extends Controller
 
         if($validate){
             Balance::create($request->toArray());
+            History::create([
+                'user_id' => $request['user_id'],
+                'date' => $request['last_saldo_date'],
+                'type' => 'income',
+                'description' => 'initial balance',
+                'nominal' => $request['amount']
+            ]);
             $request->session()->flash('success', 'Add initial balance success!');
             return redirect()->route('history.index');
         }
