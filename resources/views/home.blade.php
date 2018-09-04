@@ -39,7 +39,7 @@ Dashboard
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <strong>Initial Balance</strong>
-                                    <input type="number" name="amount" class="form-control border-input">
+                                    <input type="text" name="amount" id="amount" class="form-control border-input">
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" class="btn btn-primary btn-fill">
@@ -58,3 +58,16 @@ Dashboard
 
 @endsection
 
+@push('scripts')
+<!-- cleave js -->
+<script src="{{ asset('cleave-js/dist/cleave.min.js') }}"></script>
+<script>
+    //number format 
+    var cleave = new Cleave('#amount', {
+        numeral: true,
+        numeralThousandsGroupStyle: 'thousand'
+    });
+</script>
+
+
+@endpush

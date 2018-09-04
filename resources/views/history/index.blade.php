@@ -5,11 +5,7 @@ Dashboard
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-md-12">
-        <p class="alert alert-info"><b>Note</b> : Click the row for details activity</p>
-    </div>
-</div>
+
 <!-- error message -->
 <div class="row">
     <div class="col-md-12">
@@ -20,6 +16,7 @@ Dashboard
         @endif
     </div>
 </div>
+<!-- form intput -->
 <div class="row">
     <div class="col-lg-12 col-sm-12">
         <div class="card">
@@ -66,102 +63,78 @@ Dashboard
                     </div>
                 </div>
 
-
-                
-                
-                @foreach($dates as $date)
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bg-mobile">
-                            <p>{{ $date['date'] }}</p>
-
-                        </div>
-                        <center>
-                            <table class="table">
-                                 <tr>
-                                    <th>In</th>
-                                    <th>Out</th>
-                                    <th>Balance</th>
-                                    <th>Delete</th>
-                                </tr>
-                                @for($i=0; $i < count($daily); $i++)
-                                    <?php
-                                     $sum = 0; 
-                                    
-                                     $n=0;
-                                     ?>
-                                    @foreach($daily[$i] as $row)
-                                            <?php
-                                           
-                                                if($row['type'] == 'income') {
-                                                    $sum = $sum + $row['nominal'];
-                                                    $out = '';
-                                                    $in = $row['nominal'];
-                                                } else {
-                                                    $sum = $sum - $row['nominal'];
-                                                    $out = $row['nominal'];
-                                                    $in = '';
-                                                }
-                                                
-                                            ?>
-                                        @if($date['date'] == $row['date'])
-                                           
-
-                                            <tr>
-                                                <td>{{ $in }}</td>
-                                                <td>{{ $out }}</td>
-                                                <td>{{ $sum }}</td>
-                                                <td>Del</td>
-                                            </tr>
-                                            
-                                        @endif
-                                    @endforeach
-                                    
-                                @endfor
-                            </table>
-                        </center>
-
-                    </div>
-                </div>
-                @endforeach
-              
-              
-             
-                 <!-- UI Mobile 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="bg-mobile">
-                            <p>2018-03-09</p>
-                            <table class="table table-m">
-                                <tr>
-                                    <th>In</th>
-                                    <th>Out</th>
-                                    <th>Balance</th>
-                                    <th>Delete</th>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>8.000.000</td>
-                                    <td>8.000.000</td>
-                                    <td><a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>1.900.000</td>
-                                    <td></td>
-                                    <td>7.100.000</td>
-                                    <td> <a href="" class="btn btn-sm btn-danger"><i class="ti-trash"></i></a> </td>
-                                </tr>
-                                
-                            </table>
-                        </div>
-                    </div>
-                </div>
-               -->
-                <br>
             </div>
         </div>
     </div>
 </div>
+
+@foreach($dates as $date)
+<div class="row">
+    <div class="col-ld-12 col-sm-12">
+        <div class="card">
+            <div class="header"><strong>{{ $date['date'] }}</strong></div>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <center>
+                            <table class="table">
+                                 <tr>
+                                    <th>Nominal</th>
+                                    <th>Type</th>
+                                    <th>Desc</th>
+                                    <th>Delete</th>
+                                <?php
+                                $pemasukan = 0;
+                                $pengeluaran = 0;
+                                ?>
+                                </tr> 
+                                @for($i=0; $i < count($daily); $i++)
+                                    @foreach($daily[$i] as $row)
+                                        @if($date['date'] == $row['date'])
+                                             <?php
+                                                if($row['type'] == 'income') {
+                                                    $pemasukan += $row['nominal'];
+                                                 
+                                                } else {
+                                                   $pengeluaran += $row['nominal'];
+                                                }
+                                            ?>
+                                            <tr>
+                                                <td>{{ number_format($row['nominal']) }}</td>
+                                                <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{ strtoupper($row['type']) }}</td>
+                                                <td>{{ $row['description'] }}</td>
+                                                <td><a href="#" class="btn btn-sm btn-danger"><i class="ti-trash" ></i></a></td>
+                                            </tr>
+
+                                        @endif
+
+                                    @endforeach
+                                        
+                                @endfor
+                                <tr>
+                                    <td colspan="2"><b>Total Pemasukan</b></td>
+                                    <td>:</td>
+                                    <td>{{ number_format($pemasukan) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Total Pengeluaran</b></td>
+                                    <td>:</td>
+                                    <td>{{ number_format($pengeluaran) }}</td>
+                                </tr>
+                                
+                            </table>
+                            
+                        </center>
+                      
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endforeach
 
 @endsection
 

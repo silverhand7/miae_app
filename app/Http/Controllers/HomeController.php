@@ -41,10 +41,11 @@ class HomeController extends Controller
     public function initialBalance(request $request){
         $request['last_saldo_date'] = date('Y-m-d');
         $request['user_id'] = Auth::user()->id;
-        $request['initial_balance'] = $request->amount;
+        $request['amount'] = str_replace(",", '', $request->amount);
+        $request['initial_balance'] = $request['amount'];
 
         $validate = $request->validate([
-            'amount' => 'required|integer'
+            'amount' => 'required'
         ]);
 
         if($validate){
