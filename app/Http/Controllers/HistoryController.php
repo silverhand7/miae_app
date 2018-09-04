@@ -25,10 +25,10 @@ class HistoryController extends Controller
 
         //data history
         //group tanggal
-        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'asc')->get();
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'asc')->where('user_id', $user)->get();
         //dd($data['dates'][3]->toArray()['date']);
         for($i=0; $i<$data['dates']->count(); $i++){
-            $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->get();
+            $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
             $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
             //$data['daily'][$i] = $data['dates'][$i]->toArray()['date'];
         }
@@ -119,6 +119,14 @@ class HistoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = History::find($id);
+        $balance = Balance::where('user_id', $data['user_id'])->first();
+        $update_saldo = $data['nominal'] + $balance['amount'];
+        Balance::where('user_id', $data['user_id'])->update([
+            'amount' => $update_saldo
+        ]);
+
+        History::destroy($id);
+        return redirect()->route('history.index');
     }
 }

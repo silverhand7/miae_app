@@ -77,7 +77,7 @@ Dashboard
                 <div class="row">
                     <div class="col-md-12">
                         <center>
-                            <table class="table">
+                            <table class="table table-m">
                                  <tr>
                                     <th>Nominal</th>
                                     <th>Type</th>
@@ -103,7 +103,7 @@ Dashboard
                                                 <td>{{ number_format($row['nominal']) }}</td>
                                                 <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{ strtoupper($row['type']) }}</td>
                                                 <td>{{ $row['description'] }}</td>
-                                                <td><a href="#" class="btn btn-sm btn-danger"><i class="ti-trash" ></i></a></td>
+                                                <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td>
                                             </tr>
 
                                         @endif
@@ -123,6 +123,7 @@ Dashboard
                                 </tr>
                                 
                             </table>
+                         
                             
                         </center>
                       
@@ -139,6 +140,26 @@ Dashboard
 @endsection
 
 @push('scripts')
+
+<script>
+    $(".delete-btn").click(function(){
+        let id = $(this).attr('data-id');
+        if(confirm("Apa anda yakin akan menghapus? data ")) {
+            $.ajax({
+                url : "{{url('/')}}/history/"+id,
+                method : "POST",
+                data : {
+                    _token : "{{csrf_token()}}",
+                    _method : "DELETE",
+                }
+            })
+            .then(function(data){
+                location.reload();
+            });
+        }
+    })
+</script>
+
 <!-- Datepicker -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
