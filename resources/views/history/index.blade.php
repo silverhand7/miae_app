@@ -25,7 +25,7 @@ Dashboard
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
-                        <a class="btn btn-primary btn-fill" id="btnAdd" data-toggle="collapse" href="#collapseFormHistory">Add History</a>
+                        <a class="btn btn-primary btn-fill" onclick="hideContent()" data-toggle="collapse" href="#collapseFormHistory">Add History</a>
                     </div>
                 </div>
                 <br>
@@ -68,8 +68,30 @@ Dashboard
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="card">
+            <div class="header"><strong>Select Month</strong></div>
+        
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
+                            <option value="#">This Month</option>
+                            <option value="2018-01">Januari 2018</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="main-content">
 @foreach($dates as $date)
-<div class="row" id="main-content">
+<div class="row">
     <div class="col-ld-12 col-sm-12">
         <div class="card">
             <div class="header"><strong>{{ date("d-m-Y", strtotime($date['date']))  }}</strong></div>
@@ -136,12 +158,29 @@ Dashboard
 </div>
 
 @endforeach
+</div>
 
 @endsection
 
 @push('scripts')
 
 <script>
+
+    //kalo ganti bulan lewat select input, otomatis ganti linknya
+    function changeMonth(){
+        var month = document.getElementById('selectMonth').value;
+        location.href= 'history/details/' + month;
+    }
+
+    //kalo button add di click table hidden
+    function hideContent(){
+        var content = document.getElementById('main-content');
+        if(content.style.display === "none"){
+            content.style.display = '';
+        } else {
+            content.style.display = 'none';
+        }
+    }
     document.getElementById('btnAdd').addEventListener('click', function(){
         document.getElementById('main-content').style.display = 'none';
         this.addEventListener('click', function(){
