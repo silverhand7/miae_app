@@ -25,7 +25,7 @@ class HistoryController extends Controller
 
         //data history
         //group tanggal
-        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'asc')->where('user_id', $user)->get();
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->get();
         //dd($data['dates'][3]->toArray()['date']);
         for($i=0; $i<$data['dates']->count(); $i++){
             $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
