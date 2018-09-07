@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <!--  Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
     <link href="{{ asset('css/themify-icons.css') }}" rel="stylesheet"/>
 
@@ -61,8 +60,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
 
-    <!--  Checkbox, Radio & Switch Plugins -->
-    <script src="{{asset('js/bootstrap-checkbox-radio.js')}}"></script>
+    
 
     @stack('scripts')
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\History;
 use App\Balance;
 
@@ -39,7 +40,12 @@ class HomeController extends Controller
     }
 
     public function initialBalance(request $request){
-        $request['last_saldo_date'] = date('Y-m-d');
+        $balance = Balance::where('user_id', Auth::user()->id)->first();
+        if($balance){
+            Session::flash('danger', "You has been input initial balance"); 
+            return redirect()->route('history.index'); 
+        }
+        $request['last_saldo_date'] = date('Y-m-1');
         $request['user_id'] = Auth::user()->id;
         $request['amount'] = str_replace(",", '', $request->amount);
         $request['initial_balance'] = $request['amount'];

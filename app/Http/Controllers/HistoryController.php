@@ -16,7 +16,7 @@ class HistoryController extends Controller
     {
         $user = Auth::user()->id;
         $saldo = Balance::where('user_id', $user)->first();
-        if(count($saldo) == 0) {
+        if(!$saldo) {
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 

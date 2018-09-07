@@ -6,6 +6,10 @@ Dashboard
 
 @section('content')
 
+<style>
+    .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control { background-color: #fffcf5 !important; opacity: 1; }
+</style>
+
 <!-- error message -->
 <div class="row">
     <div class="col-md-12">
@@ -21,7 +25,6 @@ Dashboard
     <div class="col-lg-12 col-sm-12">
         <div class="card">
             <div class="header"><strong>Your Balance :  Rp. {{ number_format($balance->amount) }}</strong></div>
-        
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
@@ -37,18 +40,18 @@ Dashboard
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         <label for="date">Date</label>
-                                        <input type="text" class="form-control border-input" name="date" id="datepicker">
+                                        <input type="text" class="form-control border-input" name="date" id="datepicker" autocomplete="off" readonly="true" placeholder="Click/tap..">
                                     </div>
                                     <div class="form-group">
                                         <label for="type">Type</label>
                                         <select name="type" class="form-control border-input">
-                                            <option value="expense">Expenses</option>
+                                            <option value="expense">Spending</option>
                                             <option value="income">Income</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="nominal">Nominal</label>
-                                        <input type="text" id="nominal" class="form-control border-input" name="nominal">
+                                        <input type="text" id="nominal" class="form-control border-input" name="nominal" autocomplete="off">
                                     </div>
                                     <div class="form-group">
                                         <label for="description">Description</label>
@@ -68,6 +71,7 @@ Dashboard
     </div>
 </div>
 
+<!-- tampilkan bulan 
 <div class="row">
     <div class="col-lg-12 col-sm-12">
         <div class="card">
@@ -86,7 +90,7 @@ Dashboard
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
 <div id="main-content">
@@ -116,14 +120,16 @@ Dashboard
                                              <?php
                                                 if($row['type'] == 'income') {
                                                     $pemasukan += $row['nominal'];
+                                                    $type = $row['type'];
                                                  
                                                 } else {
                                                    $pengeluaran += $row['nominal'];
+                                                   $type = 'spend';
                                                 }
                                             ?>
                                             <tr>
                                                 <td>{{ number_format($row['nominal']) }}</td>
-                                                <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{ strtoupper($row['type']) }}</td>
+                                                <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{  strtoupper($type) }}</td>
                                                 <td>{{ $row['description'] }}</td>
                                                 <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td>
                                             </tr>
@@ -134,12 +140,12 @@ Dashboard
                                         
                                 @endfor
                                 <tr>
-                                    <td colspan="2"><b>Total Pemasukan</b></td>
+                                    <td colspan="2"><b>Income Today</b></td>
                                     <td>:</td>
                                     <td>{{ number_format($pemasukan) }}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><b>Total Pengeluaran</b></td>
+                                    <td colspan="2"><b>Spending Today</b></td>
                                     <td>:</td>
                                     <td>{{ number_format($pengeluaran) }}</td>
                                 </tr>
@@ -165,6 +171,7 @@ Dashboard
 @push('scripts')
 
 <script>
+    
 
     //kalo ganti bulan lewat select input, otomatis ganti linknya
     function changeMonth(){
@@ -181,12 +188,7 @@ Dashboard
             content.style.display = 'none';
         }
     }
-    document.getElementById('btnAdd').addEventListener('click', function(){
-        document.getElementById('main-content').style.display = 'none';
-        this.addEventListener('click', function(){
-            document.getElementById('main-content').style.display = '';
-        });
-    });
+   
 </script>
 
 <script>
@@ -214,7 +216,8 @@ Dashboard
 <script>
 $( function(){
      $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd', changeYear: true,
-      changeMonth: true, yearRange: '1945:'+(new Date).getFullYear() });
+      changeMonth: true, ignoreReadonly: true,
+       allowInputToggle: true, yearRange: '1945:'+(new Date).getFullYear() });
      $( "#datepicker2" ).datepicker({ dateFormat: 'yy-mm-dd', changeYear: true,
       changeMonth: true, yearRange: '1945:'+(new Date).getFullYear() });
     });
