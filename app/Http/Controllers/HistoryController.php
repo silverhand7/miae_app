@@ -121,6 +121,12 @@ class HistoryController extends Controller
     {
         $data = History::find($id);
         $balance = Balance::where('user_id', $data['user_id'])->first();
+
+        if($data['description'] == 'initial balance'){
+            //Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');
+            $teks = "<script> alert('Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending.'); location.href='history' </script>";
+            return \Redirect::route('history.index')->with('teks', $teks);
+        }
         $update_saldo = $data['nominal'] + $balance['amount'];
         Balance::where('user_id', $data['user_id'])->update([
             'amount' => $update_saldo

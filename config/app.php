@@ -1,7 +1,8 @@
 <?php
 
 return [
-
+'Form'      => 'Illuminate\Html\FormFacade',
+'Html'      => 'Illuminate\Html\HtmlFacade',
     /*
     |--------------------------------------------------------------------------
     | Application Name

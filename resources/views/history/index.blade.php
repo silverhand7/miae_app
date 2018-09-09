@@ -20,6 +20,11 @@ Dashboard
         @endif
     </div>
 </div>
+@php
+if(isset($teks)){
+    echo $teks;
+}
+@endphp
 <!-- form intput -->
 <div class="row">
     <div class="col-lg-12 col-sm-12">
@@ -194,7 +199,7 @@ Dashboard
 <script>
     $(".delete-btn").click(function(){
         let id = $(this).attr('data-id');
-        if(confirm("Apa anda yakin akan menghapus? data ")) {
+        if(confirm("Apa anda yakin akan menghapus data?")) {
             $.ajax({
                 url : "{{url('/')}}/history/"+id,
                 method : "POST",
