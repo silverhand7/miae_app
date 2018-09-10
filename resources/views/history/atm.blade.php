@@ -104,9 +104,12 @@ ATM
                                                     $pemasukan += $row['nominal'];
                                                     $type = $row['type'];
                                                  
-                                                } else {
+                                                } else if($row['type'] == 'pull') {
                                                    $pengeluaran += $row['nominal'];
-                                                   $type = 'spend';
+                                                   $type = 'pull';
+                                                } else if($row['type'] == 'transfer'){
+                                                	$pengeluaran += $row['nominal'];
+                                                	$type = 'transfer';
                                                 }
                                             ?>
                                             <tr>

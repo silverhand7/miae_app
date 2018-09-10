@@ -109,12 +109,12 @@ class AtmController extends Controller
             		'nominal' => $request['nominal'],
             		'description' => 'pull from atm'
             	]);
-
+            	//update balance wallet
             	Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->update([
 	                'amount' => $update_wallet,
 	                'last_saldo_date' => $request['date'],
 	            ]);
-
+            	//update balance atm
 	            Balance::where('user_id', $request['user_id'])->where('balance_type', 'atm')->update([
 	                'amount' => $saldo,
 	                'last_saldo_date' => $request['date'],

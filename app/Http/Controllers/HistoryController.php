@@ -126,6 +126,9 @@ class HistoryController extends Controller
             //Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');
             $teks = "<script> alert('Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending.'); location.href='history' </script>";
             return \Redirect::route('history.index')->with('teks', $teks);
+        } else if($data['description'] == 'pull from atm'){
+            $teks = "<script> alert('Data cannot be deleted, because you got this from your pull atm transaction'); location.href='history' </script>";
+            return \Redirect::route('history.index')->with('teks', $teks);
         }
         $update_saldo = $data['nominal'] + $balance['amount'];
         Balance::where('user_id', $data['user_id'])->update([
