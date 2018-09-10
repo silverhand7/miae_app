@@ -20,3 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('home/initial', 'HomeController@initialBalance')->name('initial')->middleware('auth');
 Route::resource('history', 'HistoryController')->middleware('auth');
+
+Route::get('atm', 'AtmController@index')->middleware('auth')->name('atm');
+Route::post('atm.store', 'AtmController@store')->middleware('auth')->name('atm.store');
+Route::post('atm', 'AtmController@initialAtm')->middleware('auth')->name('atm.initial');

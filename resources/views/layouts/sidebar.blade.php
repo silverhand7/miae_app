@@ -15,8 +15,14 @@
             <ul class="nav">
                 <li class="{{ ($menu == 1 ? 'active' : '') }}">
                     <a href="{{ route('home') }}">
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
+                        <i class="ti-wallet"></i>
+                        <p>Wallet</p>
+                    </a>
+                </li>
+                <li class="{{ ($menu == 2 ? 'active' : '') }}">
+                    <a href="{{ route('atm') }}">
+                        <i class="ti-money"></i>
+                        <p>ATM</p>
                     </a>
                 </li>
                

@@ -30,7 +30,7 @@ class HomeController extends Controller
     {
         $data['menu'] = 1;
         $user = Auth::user()->id;
-        $saldo = Balance::where('user_id', $user)->get();
+        $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->get();
         if($saldo->count() == 0) {
             return view('home', $data);
         } else {
@@ -40,7 +40,7 @@ class HomeController extends Controller
     }
 
     public function initialBalance(request $request){
-        $balance = Balance::where('user_id', Auth::user()->id)->first();
+        $balance = Balance::where('user_id', Auth::user()->id)->where('balance_type', 'wallet')->first();
         if($balance){
             Session::flash('danger', "You has been input initial balance"); 
             return redirect()->route('history.index'); 
@@ -49,6 +49,7 @@ class HomeController extends Controller
         $request['user_id'] = Auth::user()->id;
         $request['amount'] = str_replace(",", '', $request->amount);
         $request['initial_balance'] = $request['amount'];
+        $request['balance_type'] = 'wallet';
 
         $validate = $request->validate([
             'amount' => 'required'

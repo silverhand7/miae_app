@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Initial Balance
+Initial ATM
 @endsection
 
 @section('content')
@@ -35,10 +35,10 @@ Initial Balance
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="{{ route('initial') }}" method="post">
+                            <form action="{{ route('atm.initial') }}" method="post">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <strong>Initial Wallet</strong>
+                                    <strong>Initial ATM</strong>
                                     <input type="text" name="amount" id="amount" class="form-control border-input" autocomplete="off">
                                 </div>
                                 <div class="form-group">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Wallet
+ATM
 @endsection
 
 @section('content')
@@ -25,11 +25,11 @@ Wallet
 <div class="row">
     <div class="col-lg-12 col-sm-12">
         <div class="card">
-            <div class="header"><strong>Your Wallet :  Rp. {{ number_format($balance->amount) }}</strong></div>
+            <div class="header"><strong>Your ATM :  Rp. {{ number_format($saldo_atm['amount']) }}</strong></div>
             <div class="content">
                 <div class="row">
                     <div class="col-md-12">
-                        <a class="btn btn-primary btn-fill" onclick="hideContent()" data-toggle="collapse" href="#collapseFormHistory">Add Wallet Transaction</a>
+                        <a class="btn btn-primary btn-fill" onclick="hideContent()" data-toggle="collapse" href="#collapseFormHistory">Add ATM Transaction</a>
                     </div>
                 </div>
                 <br>
@@ -37,7 +37,7 @@ Wallet
                     <div class="col-md-12">
                         <div class="collapse" id="collapseFormHistory">
                             <div class="card card-body content">
-                                <form action="{{ route('history.store') }}" method="post">
+                                <form action="{{ route('atm.store') }}" method="post">
                                     {{ csrf_field() }}
                                     <div class="form-group">
                                         <label for="date">Date</label>
@@ -46,7 +46,8 @@ Wallet
                                     <div class="form-group">
                                         <label for="type">Type</label>
                                         <select name="type" class="form-control border-input">
-                                            <option value="expense">Spending</option>
+                                            <option value="pull">Pull</option>
+                                            <option value="transfer">Transfer</option>
                                             <option value="income">Income</option>
                                         </select>
                                     </div>
@@ -56,7 +57,7 @@ Wallet
                                     </div>
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea name="description" class="form-control border-input"></textarea>
+                                        <textarea name="desc" class="form-control border-input"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <input type="submit" class="btn btn-success btn-block btn-fill">
@@ -72,29 +73,9 @@ Wallet
     </div>
 </div>
 
-<!-- tampilkan bulan 
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="card">
-            <div class="header"><strong>Select Month</strong></div>
-        
-            <div class="content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
-                            <option value="#">This Month</option>
-                            <option value="2018-01">Januari 2018</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
+<!-- main content -->
 <div id="main-content">
+@if($dates)
 @foreach($dates as $date)
 <div class="row">
     <div class="col-ld-12 col-sm-12">
@@ -131,7 +112,7 @@ Wallet
                                             <tr>
                                                 <td>{{ number_format($row['nominal']) }}</td>
                                                 <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{  strtoupper($type) }}</td>
-                                                <td>{{ $row['description'] }}</td>
+                                                <td>{{ $row['desc'] }}</td>
                                                 <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td>
                                             </tr>
 
@@ -163,8 +144,8 @@ Wallet
         </div>
     </div>
 </div>
-
 @endforeach
+@endif
 </div>
 
 @endsection

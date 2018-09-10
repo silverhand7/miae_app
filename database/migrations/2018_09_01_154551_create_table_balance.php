@@ -17,6 +17,9 @@ class CreateTableBalance extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('amount');
+            $table->date('last_saldo_date');
+            $table->integer('initial_balance');
+            $table->enum('balance_type', ['wallet', 'atm']);
             $table->timestamps();
         });
     }

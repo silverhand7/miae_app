@@ -15,7 +15,7 @@ class HistoryController extends Controller
     public function index()
     {
         $user = Auth::user()->id;
-        $saldo = Balance::where('user_id', $user)->first();
+        $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->first();
         if(!$saldo) {
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
@@ -26,14 +26,13 @@ class HistoryController extends Controller
         //data history
         //group tanggal
         $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->get();
-        //dd($data['dates'][3]->toArray()['date']);
+
+       //show detail tanggal
         for($i=0; $i<$data['dates']->count(); $i++){
             $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
-            $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
-            //$data['daily'][$i] = $data['dates'][$i]->toArray()['date'];
+            $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->where('balance_type', 'wallet')->get();
+            
         }
-        //dd($data['daily']);
-        //dd($data['balanced']);
         
         $data['menu'] = 1;
         return view('history.index', $data);
@@ -54,7 +53,7 @@ class HistoryController extends Controller
         
         if($validate){
             
-            $balance = Balance::where('user_id', $request['user_id'])->first();
+            $balance = Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->first();
             if($request->type == 'income'){
                 $saldo = $balance['amount'] + $request['nominal'];
             } else {
@@ -65,9 +64,10 @@ class HistoryController extends Controller
             History::create($request->toArray());
 
             //update table balance to newest saldo
-            Balance::where('user_id', $request['user_id'])->update([
+            Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->update([
                 'amount' => $saldo,
-                'last_saldo_date' => $request['date']
+                'last_saldo_date' => $request['date'],
+                'balance_type' => 'wallet'
             ]);
 
             Session::flash('success', 'Add new history successfully!');
@@ -120,7 +120,7 @@ class HistoryController extends Controller
     public function destroy($id)
     {
         $data = History::find($id);
-        $balance = Balance::where('user_id', $data['user_id'])->first();
+        $balance = Balance::where('user_id', $data['user_id'])->where('balance_type', 'wallet')->first();
 
         if($data['description'] == 'initial balance'){
             //Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');

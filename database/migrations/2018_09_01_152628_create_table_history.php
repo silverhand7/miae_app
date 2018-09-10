@@ -18,8 +18,10 @@ class CreateTableHistory extends Migration
             $table->integer('user_id');
             $table->date('date');
             $table->enum('type', ['income', 'expense']);
+            $table->integer('nominal');
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
