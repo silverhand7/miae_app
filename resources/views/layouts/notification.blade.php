@@ -20,7 +20,7 @@
             $(document).ready(function(){
                 $.notify({
                     icon: 'ti-close',
-                    message: "<b>Ooops!</b>! <br> <?= Session::get('danger') ?>"
+                    message: "<b>Sorry!</b>! <br> <?= Session::get('danger') ?>"
 
                 },{
                     type: 'danger',

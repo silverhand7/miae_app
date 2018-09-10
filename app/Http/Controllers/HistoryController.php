@@ -123,15 +123,20 @@ class HistoryController extends Controller
         $balance = Balance::where('user_id', $data['user_id'])->where('balance_type', 'wallet')->first();
 
         if($data['description'] == 'initial balance'){
-            //Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');
-            $teks = "<script> alert('Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending.'); location.href='history' </script>";
-            return \Redirect::route('history.index')->with('teks', $teks);
+            Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');
+            return \Redirect::route('history.index');
         } else if($data['description'] == 'pull from atm'){
-            $teks = "<script> alert('Data cannot be deleted, because you got this from your pull atm transaction'); location.href='history' </script>";
-            return \Redirect::route('history.index')->with('teks', $teks);
+            Session::flash('danger', 'Data cannot be deleted, because you get it from your atm withdrawal transaction. ');
+            return \Redirect::route('history.index');
         }
-        $update_saldo = $data['nominal'] + $balance['amount'];
-        Balance::where('user_id', $data['user_id'])->update([
+
+        if($data['type'] == 'expense'){
+           $update_saldo = $data['nominal'] + $balance['amount']; 
+        } else {
+            $update_saldo = $balance['amount'] - $data['nominal'];
+        }
+        
+        Balance::where('user_id', $data['user_id'])->where('balance_type', 'wallet')->update([
             'amount' => $update_saldo
         ]);
 

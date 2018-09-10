@@ -132,7 +132,15 @@ Wallet
                                                 <td>{{ number_format($row['nominal']) }}</td>
                                                 <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{  strtoupper($type) }}</td>
                                                 <td>{{ $row['description'] }}</td>
-                                                <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td>
+                                                <!-- <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td> -->
+                                                <form action="{{ route('history.destroy', ['id' => $row['id']]) }}" method="post">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <input type="hidden" name="id" value="{{ $row['id'] }}">
+                                                <td>
+                                                    <button type="submit" class="btn btn-sm btn-danger"><i class="ti-trash" onclick="return confirm('Are you sure?')" ></i></button>
+                                                </td>
+                                                </form>
                                             </tr>
 
                                         @endif

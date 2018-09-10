@@ -107,7 +107,7 @@ class AtmController extends Controller
             		'date' => $request->date,
             		'type' => 'income',
             		'nominal' => $request['nominal'],
-            		'description' => 'pull from atm'
+            		'description' => 'pull from atm',
             	]);
             	//update balance wallet
             	Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->update([
@@ -138,5 +138,32 @@ class AtmController extends Controller
 
             }
         }
+    }
+
+    public function destroy($id){
+    	$data = HistoryAtm::find($id);
+    	$balance = Balance::where('user_id', $data['user_id'])->where('balance_type', 'atm')->first();
+
+    	if($data['desc'] == 'initial atm'){
+    		Session::flash('danger', 'Data cannot be deleted! if you want to change the value of your balance, make sure to add some transactions, either income or spending. ');
+            return \Redirect::route('atm');
+    	}
+
+    	if($data['type'] == 'pull'){
+    		Session::flash('danger', 'Delete failed!. ');
+            return \Redirect::route('atm');
+    	} else if($data['type'] == 'transfer'){
+           $update_atm = $data['nominal'] + $balance['amount'];
+        } else if($data['type'] == 'income') {
+            $update_atm = $balance['amount'] - $data['nominal'];
+        }
+
+    	
+    	Balance::where('user_id', $data['user_id'])->where('balance_type', 'atm')->update([
+    		'amount' => $update_atm
+    	]);
+
+    	HistoryAtm::destroy($id);
+    	return redirect()->route('atm');
     }
 }

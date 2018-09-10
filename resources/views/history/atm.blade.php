@@ -116,7 +116,15 @@ ATM
                                                 <td>{{ number_format($row['nominal']) }}</td>
                                                 <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{  strtoupper($type) }}</td>
                                                 <td>{{ $row['desc'] }}</td>
-                                                <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td>
+                                                <!-- <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td> -->
+                                                <form action="{{ route('atm.destroy', ['id' => $row['id']]) }}" method="post">
+                                                    {{ csrf_field() }}
+                                                    {{ method_field('DELETE') }}
+                                                    <input type="hidden" name="id" value="{{ $row['id'] }}">
+                                                    <td>
+                                                    	<button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger"><i class="ti-trash" ></i></button>
+                                                    </td>
+                                                </form>
                                             </tr>
 
                                         @endif

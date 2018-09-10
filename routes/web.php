@@ -24,3 +24,4 @@ Route::resource('history', 'HistoryController')->middleware('auth');
 Route::get('atm', 'AtmController@index')->middleware('auth')->name('atm');
 Route::post('atm.store', 'AtmController@store')->middleware('auth')->name('atm.store');
 Route::post('atm', 'AtmController@initialAtm')->middleware('auth')->name('atm.initial');
+Route::delete('atm/{id}', 'AtmController@destroy')->middleware('auth')->name('atm.destroy');
