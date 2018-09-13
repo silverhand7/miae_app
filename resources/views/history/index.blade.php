@@ -72,29 +72,32 @@ Wallet
     </div>
 </div>
 
-<!-- tampilkan bulan 
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <div class="card">
-            <div class="header"><strong>Select Month</strong></div>
-        
-            <div class="content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
-                            <option value="#">This Month</option>
-                            <option value="2018-01">Januari 2018</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 
 <div id="main-content">
+    
+    <!-- tampilkan bulan -->
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="card">
+                <div class="header"></div>
+            
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
+                                <option value="">This Month</option>
+                                <option value="2018-01">Januari 2018</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @foreach($dates as $date)
 <div class="row">
     <div class="col-ld-12 col-sm-12">
@@ -186,6 +189,9 @@ Wallet
     function changeMonth(){
         var month = document.getElementById('selectMonth').value;
         location.href= 'history/details/' + month;
+        if(month==''){
+            location.href='history';
+        }
     }
 
     //kalo button add di click table hidden

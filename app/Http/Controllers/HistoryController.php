@@ -14,12 +14,19 @@ class HistoryController extends Controller
 
     public function index()
     {
+        // $monthNumber = ;
+        // echo date('F', mktime(0,0,0, $monthNumber, 10));
         $user = Auth::user()->id;
         $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->first();
         if(!$saldo) {
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 
+
+        //... masih error ... //
+        // $month = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
+        // dd($month);
+
         //data saldo
         $data['balance'] = $saldo;
 
