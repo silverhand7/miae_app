@@ -88,9 +88,26 @@ class AtmController extends Controller
             	//kalo dia pull, saldo di wallet otomatis tambah
             	$a = 1;
             	$wallet = Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->first();
-            	$update_wallet = $wallet->amount + $request['nominal'];
-            	$saldo = $balance['amount'] - $request['nominal'];
+            	//kalo data wallet ga ada dia create wallet balance baru
+            	if(!$wallet){
+            		//insert balance
+            		$query = Balance::create([
+            			'user_id' => $request['user_id'],
+            			'amount' => $request['nominal'],
+            			'last_saldo_date' => $request->date,
+            			'initial_balance' => $request['nominal'],
+            			'balance_type' => 'wallet'
+            		]);
+            		
 
+            		$update_wallet =  $request['nominal'];
+            		$saldo = $balance['amount'] - $request['nominal'];
+
+            	} else {
+            		$update_wallet = $wallet->amount + $request['nominal'];
+            		$saldo = $balance['amount'] - $request['nominal'];
+            	}
+            	
 
             }
             else if($request->type == 'transfer') {
