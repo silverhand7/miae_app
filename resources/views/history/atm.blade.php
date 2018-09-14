@@ -75,6 +75,41 @@ ATM
 
 <!-- main content -->
 <div id="main-content">
+
+<!-- tampilkan bulan -->
+    <div class="row">
+        <div class="col-lg-12 col-sm-12">
+            <div class="card">
+                <div class="header"></div>
+            
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
+                                <option value="">This Month</option>
+                                <?php $segment = '' ?>
+                                @foreach($month as $m)
+                                    <?php 
+                                    $tgl = explode('-', $m->date);
+                                    $tanggal = date('F', mktime(0,0,0, $tgl[1], 10));
+                                    if (strpos($m->date, date('Y-m')) !== false) {
+                                        $val = '';
+                                    } else {
+                                        $val = $tgl[0] .'-'. $tgl[1];
+                                        $segment = Request::segment(3);
+                                        }           
+                                    ?>
+                                    <option value="{{ $val }}" {{ ($segment == $val && $segment != '') ? 'selected' : '' }}>{{ $tanggal }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @if($dates)
 @foreach($dates as $date)
 <div class="row">
@@ -169,7 +204,10 @@ ATM
     //kalo ganti bulan lewat select input, otomatis ganti linknya
     function changeMonth(){
         var month = document.getElementById('selectMonth').value;
-        location.href= 'history/details/' + month;
+        location.href= " {{ url('/atm/details/')}}/"+month;
+        if(month==''){
+            location.href='{{ route("atm") }}';
+        }
     }
 
     //kalo button add di click table hidden

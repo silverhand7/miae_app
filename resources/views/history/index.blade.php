@@ -73,7 +73,6 @@ Wallet
 </div>
 
 
-
 <div id="main-content">
     
     <!-- tampilkan bulan -->
@@ -87,7 +86,19 @@ Wallet
                         <div class="col-md-12">
                             <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
                                 <option value="">This Month</option>
-                                <option value="2018-01">Januari 2018</option>
+                                @foreach($month as $m)
+                                    <?php 
+                                    $tgl = explode('-', $m->date);
+                                    $tanggal = date('F', mktime(0,0,0, $tgl[1], 10));
+                                    if (strpos($m->date, date('Y-m')) !== false) {
+                                        $val = '';
+                                    } else {
+                                        $val = $tgl[0] .'-'. $tgl[1];
+                                        $segment = Request::segment(3);
+                                    }
+                                    ?>
+                                    <option value="{{ $val }}" {{ ($segment == $val && $segment != '') ? 'selected' : '' }}>{{ $tanggal }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -135,7 +146,6 @@ Wallet
                                                 <td>{{ number_format($row['nominal']) }}</td>
                                                 <td style="color:{{( $row['type']=='income' ? 'green' : 'red')}}">{{  strtoupper($type) }}</td>
                                                 <td>{{ $row['description'] }}</td>
-                                                <!-- <td><a href="#" data-id="{{$row['id']}}" class="btn btn-sm btn-danger delete-btn"><i class="ti-trash" ></i></a></td> -->
                                                 <form action="{{ route('history.destroy', ['id' => $row['id']]) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
@@ -188,9 +198,9 @@ Wallet
     //kalo ganti bulan lewat select input, otomatis ganti linknya
     function changeMonth(){
         var month = document.getElementById('selectMonth').value;
-        location.href= 'history/details/' + month;
+        location.href= " {{ url('/history/details/')}}/"+month;
         if(month==''){
-            location.href='history';
+            location.href='{{ route("history.index") }}';
         }
     }
 

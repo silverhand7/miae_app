@@ -22,10 +22,13 @@ class AtmController extends Controller
     		return view('initial_atm')->with('menu', 2);
     	}
 
+    	//... group tgl ... //
+        $data['month'] = DB::select("SELECT count(*) num, date from history_atm group by MONTH(date)");
+
 
         //data history
         //group tanggal
-        $data['dates'] = HistoryAtm::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->get();
+        $data['dates'] = HistoryAtm::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->where('date', 'like', '%'.date('Y-m'). '%')->get();
 
         //show detail tanggal
         for($i=0; $i<$data['dates']->count(); $i++){
@@ -35,6 +38,36 @@ class AtmController extends Controller
         }
 
     	return view('history.atm', $data);
+    }
+
+    public function details($date){
+        $user = Auth::user()->id;
+        $saldo = Balance::where('user_id', $user)->where('balance_type', 'atm')->first();
+        if(!$saldo) {
+            Session::flash('warning', 'Please enter initial balance first!'); 
+            return redirect()->route('home');
+        } 
+
+        //... masih error ... //
+        $data['month'] = DB::select("SELECT count(*) num, date from history_atm group by MONTH(date)");
+        
+
+        //data saldo
+        $data['balance'] = $saldo;
+
+        //data history
+        //group tanggal
+        $data['dates'] = HistoryAtm::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->where('date', 'like', '%'.$date. '%')->get();
+
+       //show detail tanggal
+        for($i=0; $i<$data['dates']->count(); $i++){
+            $data['daily'][$i] = HistoryAtm::where('date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
+            $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->where('balance_type', 'atm')->get();
+            
+        }
+        
+        $data['menu'] = 1;
+        return view('history.index', $data);
     }
 
     public function initialAtm(Request $request){

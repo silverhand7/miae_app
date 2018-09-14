@@ -14,8 +14,37 @@ class HistoryController extends Controller
 
     public function index()
     {
-        // $monthNumber = ;
-        // echo date('F', mktime(0,0,0, $monthNumber, 10));
+        
+        $user = Auth::user()->id;
+        $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->first();
+        if(!$saldo) {
+            Session::flash('warning', 'Please enter initial balance first!'); 
+            return redirect()->route('home');
+        } 
+
+        //... group tgl ... //
+        $data['month'] = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
+        
+
+        //data saldo
+        $data['balance'] = $saldo;
+
+        //data history
+        //group tanggal
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->where('date', 'like', '%'.date('Y-m'). '%')->get();
+
+       //show detail tanggal
+        for($i=0; $i<$data['dates']->count(); $i++){
+            $data['daily'][$i] = History::where('date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->get();
+            $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->where('balance_type', 'wallet')->get();
+            
+        }
+        
+        $data['menu'] = 1;
+        return view('history.index', $data);
+    }
+
+    public function details($date){
         $user = Auth::user()->id;
         $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->first();
         if(!$saldo) {
@@ -24,15 +53,15 @@ class HistoryController extends Controller
         } 
 
         //... masih error ... //
-        // $month = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
-        // dd($month);
+        $data['month'] = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
+        
 
         //data saldo
         $data['balance'] = $saldo;
 
         //data history
         //group tanggal
-        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->get();
+        $data['dates'] = History::selectRaw('count(*) AS date_count, date')->groupBy('date')->orderBy('date', 'desc')->where('user_id', $user)->where('date', 'like', '%'.$date. '%')->get();
 
        //show detail tanggal
         for($i=0; $i<$data['dates']->count(); $i++){
