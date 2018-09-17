@@ -29,4 +29,4 @@ Route::delete('atm/{id}', 'AtmController@destroy')->middleware('auth')->name('at
 Route::get('history/details/{id}', 'HistoryController@details')->middleware('auth')->name('history.details');
 Route::get('atm/details/{id}', 'AtmController@details')->middleware('auth')->name('atm.history');
 
-Route::get('resets', 'ResetController@doReset')->middleware('auth')->name('resets');
+Route::delete('resets/{id}', 'ResetsController@doReset')->middleware('auth')->name('resets');
