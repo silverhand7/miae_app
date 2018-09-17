@@ -120,6 +120,7 @@ class AtmController extends Controller
             } else if($request->type == 'pull'){
             	//kalo dia pull, saldo di wallet otomatis tambah
             	$a = 1;
+            	$code_access = 'access_'.rand();
             	$wallet = Balance::where('user_id', $request['user_id'])->where('balance_type', 'wallet')->first();
             	//kalo data wallet ga ada dia create wallet balance baru
             	if(!$wallet){
@@ -129,6 +130,7 @@ class AtmController extends Controller
             			'amount' => $request['nominal'],
             			'last_saldo_date' => $request->date,
             			'initial_balance' => $request['nominal'],
+            			'code_access' => $code_access,
             			'balance_type' => 'wallet'
             		]);
             		
@@ -149,6 +151,7 @@ class AtmController extends Controller
             }
 
             if($a==1){
+            	$request['code_access'] = $code_access;
             	//insert to table history atm
 	            HistoryAtm::create($request->toArray());
 	            //insert to table history wallet
@@ -157,6 +160,7 @@ class AtmController extends Controller
             		'date' => $request->date,
             		'type' => 'income',
             		'nominal' => $request['nominal'],
+            		'code_access' => $code_access,
             		'description' => 'pull from atm',
             	]);
             	//update balance wallet
@@ -200,8 +204,17 @@ class AtmController extends Controller
     	}
 
     	if($data['type'] == 'pull'){
-    		Session::flash('danger', 'Delete failed!. ');
-            return \Redirect::route('atm');
+    		//delete history wallet & kurangi balance wallet
+    		$wallet = History::where('code_access', $data['code_access'])->first();
+    		$balanceWallet = Balance::where('user_id', $data['user_id'])->where('balance_type', 'wallet')->first();
+    		$newBalanceWallet = $balanceWallet['amount'] - $wallet['nominal'];
+    		Balance::where('user_id', $data['user_id'])->where('balance_type', 'wallet')->update([
+    			'amount' => $newBalanceWallet
+    		]);
+    		History::where('code_access', $data['code_access'])->delete();
+    		$update_atm = $data['nominal'] + $balance['amount'];
+    		// Session::flash('danger', 'Delete failed!. ');
+      //       return \Redirect::route('atm');
     	} else if($data['type'] == 'transfer'){
            $update_atm = $data['nominal'] + $balance['amount'];
         } else if($data['type'] == 'income') {

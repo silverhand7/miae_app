@@ -86,6 +86,7 @@ Wallet
                         <div class="col-md-12">
                             <select onchange="changeMonth()" id="selectMonth" class="form-control border-input">
                                 <option value="">This Month</option>
+                                <?php $segment = '' ?>
                                 @foreach($month as $m)
                                     <?php 
                                     $tgl = explode('-', $m->date);

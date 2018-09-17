@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class History extends Model
 {
-    protected $fillable = ['user_id', 'date', 'type', 'description', 'nominal'];
+    protected $fillable = ['user_id', 'date', 'type', 'description', 'nominal', 'code_access'];
     protected $table = 'history';
     use SoftDeletes;
     protected $dates = ['deleted_at'];

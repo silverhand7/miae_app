@@ -20,6 +20,7 @@ class CreateTableHistory extends Migration
             $table->enum('type', ['income', 'expense']);
             $table->integer('nominal');
             $table->string('description')->nullable();
+            $table->string('code_access')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
