@@ -25,15 +25,7 @@
                         <p>ATM</p>
                     </a>
                 </li>
-                <form action="{{ route('resets', ['id' => Auth::user()->id ]) }}" method="post">
-                <li class="{{ ($menu == 3 ? 'active' : '') }}">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-
-                    <input type="hidden" name="id" value="{{ Auth::user()->id }}">
-                    <button type="submit" onclick="return confirm('are you sure? if you do resets, it means your data will be reseted and everything were be gone, it will make you to start from the beginning.')" style="color:red"><b>Resets Saldo</b></button>
-                </li>
-                </form>
+              
                
             </ul>
     	</div>

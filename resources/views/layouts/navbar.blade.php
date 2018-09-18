@@ -19,6 +19,18 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li>
+                          <br>
+                          <form action="{{ route('resets', ['id' => Auth::user()->id ]) }}" method="post">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE') }}
+                            <input type="hidden" name="id" value="{{ Auth::user()->id }}">
+                            <button type="submit" onclick="return confirm('are you sure? if you do resets, it means your data will be reseted and everything were be gone, it will make you to start from the beginning.')" class="btn-block"><b>Resets Saldo</b></button>
+                          </form>
+                          <br>
+                         
+                        </li>
+                        <div class="divider"></div>
+                        <li>
                              <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
@@ -29,6 +41,8 @@
                                 {{ csrf_field() }}
                             </form>
                         </li>
+                        
+                       
                       </ul>
                 </li>
 				

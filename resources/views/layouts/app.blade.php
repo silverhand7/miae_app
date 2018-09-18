@@ -4,12 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="og:title" content="MIAE App - Money Income and Expenses Application">
+    <meta name="keywords" content="MIAE APP, Money management, Finance Application" >
+    <meta property="og:description" content="Money Income and Expenses also known as MIAE App is an application to manage your finances, this application is very useful for those who want to control their money expenses, for more details, please visit. ">
+    <meta property="description" content="Money Income and Expenses also known as MIAE App is an application to manage your finances, this application is very useful for those who want to control their money expenses, for more details, please visit.">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title') | MIAE APP</title>
-
+    
+    <link rel="icon" href="{{ asset('img/logos.png')}}">
 
     <!-- Bootstrap core CSS     -->
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet"/>
