@@ -23,7 +23,7 @@
     <link href="{{ asset('css/animate.min.css')}}" rel="stylesheet"/>
 
     <!--  Paper Dashboard core CSS    -->
-    <link href="{{ asset('css/paper-dashboard.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('css/paper-dashboard.css?v=2')}}" rel="stylesheet"/>
     
     <!-- datepicker -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

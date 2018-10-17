@@ -75,6 +75,17 @@ ATM
 
 <!-- main content -->
 <div id="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="content">
+                    <p>- Spending this month : {{number_format($pengeluaran->total)}} </p><p> - Income this month : {{number_format($pemasukan->total)}} </p>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
 
 <!-- tampilkan bulan -->
     <div class="row">

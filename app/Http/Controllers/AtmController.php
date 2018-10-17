@@ -14,6 +14,7 @@ class AtmController extends Controller
 {
     public function index(){
     	$user = Auth::user()->id;
+        $now = date("Y-m");
     	$data['menu'] = 2;
     	$data['saldo_atm'] = Balance::where('user_id', $user)->where('balance_type', 'atm')->first();
 
@@ -37,6 +38,13 @@ class AtmController extends Controller
             
         }
 
+        //get total pengeluaran & pemasukan bulan ini
+        $data['pengeluaran'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$now. '%')->first();
+
+        $data['pemasukan'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->first();
+
+        
+
     	return view('history.atm', $data);
     }
 
@@ -47,6 +55,11 @@ class AtmController extends Controller
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 
+
+        //get total pengeluaran & pemasukan bulan ini
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->first();
+
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->first();
 
         //... masih error ... //
         $data['month'] = DB::select("SELECT count(*) num, date from history_atm group by MONTH(date)");

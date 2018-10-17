@@ -75,6 +75,7 @@ Wallet
 
 <div id="main-content">
     
+    
     <!-- tampilkan bulan -->
     <div class="row">
         <div class="col-lg-12 col-sm-12">
@@ -108,7 +109,17 @@ Wallet
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="content">
+                    <p>- Spending this month : {{number_format($pengeluaran->total)}} </p><p> - Income this month : {{number_format($pemasukan->total)}} </p>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
 
 @foreach($dates as $date)
 <div class="row">

@@ -16,6 +16,7 @@ class HistoryController extends Controller
     {
         
         $user = Auth::user()->id;
+        $now = date("Y-m");
         $saldo = Balance::where('user_id', $user)->where('balance_type', 'wallet')->first();
         if(!$saldo) {
             Session::flash('warning', 'Please enter initial balance first!'); 
@@ -39,6 +40,11 @@ class HistoryController extends Controller
             $data['balanced'][$i] = Balance::where('last_saldo_date', $data['dates'][$i]->toArray()['date'])->where('user_id', $user)->where('balance_type', 'wallet')->get();
             
         }
+
+        //get total pengeluaran & pemasukan bulan ini
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$now. '%')->first();
+
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->first();
         
         $data['menu'] = 1;
         return view('history.index', $data);
@@ -51,6 +57,11 @@ class HistoryController extends Controller
             Session::flash('warning', 'Please enter initial balance first!'); 
             return redirect()->route('home');
         } 
+
+        //get total pengeluaran & pemasukan bulan ini
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->first();
+
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->first();
 
         //... masih error ... //
         $data['month'] = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
