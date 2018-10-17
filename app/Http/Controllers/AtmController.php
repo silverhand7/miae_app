@@ -39,7 +39,7 @@ class AtmController extends Controller
         }
 
         //get total pengeluaran & pemasukan bulan ini
-        $data['pengeluaran'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$now. '%')->first();
+        $data['pengeluaran'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', '<>', 'income')->where('date', 'like', '%'.$now. '%')->first();
 
         $data['pemasukan'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->first();
 
