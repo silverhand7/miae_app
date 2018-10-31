@@ -66,7 +66,7 @@ class AtmController extends Controller
         
 
         //data saldo
-        $data['balance'] = $saldo;
+        $data['saldo_atm'] = $saldo;
 
         //data history
         //group tanggal
@@ -80,7 +80,7 @@ class AtmController extends Controller
         }
         
         $data['menu'] = 1;
-        return view('history.index', $data);
+        return view('history.atm', $data);
     }
 
     public function initialAtm(Request $request){
