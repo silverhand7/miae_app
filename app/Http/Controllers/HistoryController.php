@@ -24,7 +24,7 @@ class HistoryController extends Controller
         } 
 
         //... group tgl ... //
-        $data['month'] = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
+        $data['month'] = DB::select("SELECT count(*) num, date from history WHERE user_id = $user group by MONTH(date)");
         
 
         //data saldo
@@ -42,9 +42,9 @@ class HistoryController extends Controller
         }
 
         //get total pengeluaran & pemasukan bulan ini
-        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$now. '%')->first();
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$now. '%')->where('user_id', $user)->first();
 
-        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->first();
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->where('user_id', $user)->first();
         
         $data['menu'] = 1;
         return view('history.index', $data);
@@ -59,12 +59,12 @@ class HistoryController extends Controller
         } 
 
         //get total pengeluaran & pemasukan bulan ini
-        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->first();
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->where('user_id', $user)->first();
 
-        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->first();
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->where('user_id', $user)->first();
 
         //... masih error ... //
-        $data['month'] = DB::select("SELECT count(*) num, date from history group by MONTH(date)");
+        $data['month'] = DB::select("SELECT count(*) num, date from history WHERE user_id = $user group by MONTH(date)");
         
 
         //data saldo

@@ -24,7 +24,7 @@ class AtmController extends Controller
     	}
 
     	//... group tgl ... //
-        $data['month'] = DB::select("SELECT count(*) num, date from history_atm group by MONTH(date)");
+        $data['month'] = DB::select("SELECT count(*) num, date from history_atm WHERE user_id = $user group by MONTH(date)");
 
 
         //data history
@@ -39,9 +39,9 @@ class AtmController extends Controller
         }
 
         //get total pengeluaran & pemasukan bulan ini
-        $data['pengeluaran'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', '<>', 'income')->where('date', 'like', '%'.$now. '%')->first();
+        $data['pengeluaran'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', '<>', 'income')->where('date', 'like', '%'.$now. '%')->where('user_id', $user)->first();
 
-        $data['pemasukan'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->first();
+        $data['pemasukan'] = HistoryAtm::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$now. '%')->where('user_id', $user)->first();
 
         
 
@@ -57,12 +57,12 @@ class AtmController extends Controller
         } 
 
         //get total pengeluaran & pemasukan bulan ini
-        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->first();
+        $data['pengeluaran'] = History::selectRaw('sum(nominal) AS total')->where('type', 'expense')->where('date', 'like', '%'.$date. '%')->where('user_id', $user)->first();
 
-        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->first();
+        $data['pemasukan'] = History::selectRaw('sum(nominal) AS total')->where('type', 'income')->where('date', 'like', '%'.$date. '%')->where('user_id', $user)->first();
 
-        //... masih error ... //
-        $data['month'] = DB::select("SELECT count(*) num, date from history_atm group by MONTH(date)");
+        //... bulan list ... //
+        $data['month'] = DB::select("SELECT count(*) num, date from history_atm WHERE user_id = $user group by MONTH(date)");
         
 
         //data saldo
